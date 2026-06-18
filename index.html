@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARCADE RACER</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div id="loading">
+    <div id="loading-bar-wrap"><div id="loading-bar"></div></div>
+    <div id="loading-text">BUILDING...</div>
+  </div>
+
+  <div id="menu" class="screen hidden">
+    <h1>ARCADE RACER</h1>
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="start">START</button>
+      <button class="tab-btn" data-tab="cars">CARS</button>
+      <button class="tab-btn" data-tab="settings">SETTINGS</button>
+    </div>
+
+    <!-- START TAB -->
+    <div id="tab-start" class="tab-content">
+      <div class="controls">
+        <p>W / UP — Gas &nbsp; S / DOWN — Brake &nbsp; A / D — Steer &nbsp; SHIFT — Nitro</p>
+      </div>
+      <div class="menu-row"><span>TRACK</span><button id="t-prev">&lt;</button><span id="track-label">OVAL</span><button id="t-next">&gt;</button></div>
+      <div class="menu-row"><span>DIFFICULTY</span><button id="d-prev">&lt;</button><span id="diff-label">MEDIUM</span><button id="d-next">&gt;</button></div>
+      <div class="menu-row"><span>OPPONENTS</span><button id="o-prev">&lt;</button><span id="opp-label">1</span><button id="o-next">&gt;</button></div>
+      <div class="menu-row"><span>MONEY</span><span id="money-label" style="color:#ffd700">$0</span></div>
+      <button id="start-btn">PRESS ENTER TO RACE</button>
+    </div>
+
+    <!-- CARS TAB -->
+    <div id="tab-cars" class="tab-content hidden">
+      <div class="menu-row"><span>CAR</span><button id="c-prev">&lt;</button><span id="car-label">STOCK</span><button id="c-next">&gt;</button><span id="car-status" style="font-size:11px;color:#666;margin-left:6px">READY</span></div>
+      <button id="upgrades-btn" style="padding:8px 20px;font-size:13px">UPGRADES &amp; ITEMS</button>
+      <div style="margin-top:10px;font-size:12px;color:#888;text-align:center">SHIFT = Nitro boost (buy in upgrades)</div>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div id="tab-settings" class="tab-content hidden">
+      <div class="setting-row" style="justify-content:center;margin:8px 0">
+        <span>Graphics</span>
+        <button id="q-prev">&lt;</button>
+        <span id="q-label">Medium</span>
+        <button id="q-next">&gt;</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="pause" class="screen hidden">
+    <h2>PAUSED</h2>
+    <p>ESC to resume</p>
+  </div>
+
+  <div id="upgrade" class="screen hidden">
+    <h2 id="upg-title">UPGRADES</h2>
+    <div class="upg-entry"><span>ENGINE</span><span id="upg-engine-level">LV 0/3</span><span id="upg-engine-cost">$100</span><button id="upg-engine-minus" class="upg-btn">-</button><button id="upg-engine-plus" class="upg-btn">+</button><span id="upg-engine-refund" style="font-size:11px;color:#666">—</span></div>
+    <div class="upg-entry"><span>TIRES</span><span id="upg-tires-level">LV 0/3</span><span id="upg-tires-cost">$100</span><button id="upg-tires-minus" class="upg-btn">-</button><button id="upg-tires-plus" class="upg-btn">+</button><span id="upg-tires-refund" style="font-size:11px;color:#666">—</span></div>
+    <div class="upg-entry"><span>TURBO</span><span id="upg-turbo-level">LV 0/3</span><span id="upg-turbo-cost">$100</span><button id="upg-turbo-minus" class="upg-btn">-</button><button id="upg-turbo-plus" class="upg-btn">+</button><span id="upg-turbo-refund" style="font-size:11px;color:#666">—</span></div>
+    <div class="upg-entry" style="border-top:1px solid #333;padding-top:6px;margin-top:6px"><span>NITRO</span><span id="upg-nitro-level">LV 0/3</span><span id="upg-nitro-cost">$300</span><button id="upg-nitro-minus" class="upg-btn">-</button><button id="upg-nitro-plus" class="upg-btn">+</button><span id="upg-nitro-refund" style="font-size:11px;color:#666">—</span></div>
+    <button id="upg-back" style="margin-top:12px">BACK</button>
+  </div>
+
+  <div id="result" class="screen hidden">
+    <h2 id="result-title">FINISH!</h2>
+    <p id="result-pos">#1</p>
+    <p id="result-xp">+100 XP</p>
+    <p id="result-money" style="color:#ffd700">+$200</p>
+    <p id="result-level">LEVEL 1</p>
+    <p id="result-time">00:00.0</p>
+    <div style="display:flex;gap:12px;margin-top:8px">
+      <button id="retry-btn">RETRY</button>
+      <button id="result-btn">MENU</button>
+    </div>
+  </div>
+
+  <div id="hud" class="hidden">
+    <div id="speed">000</div>
+    <div id="lap">LAP 1/3</div>
+    <div id="pos">#1</div>
+    <div id="timer">00:00.0</div>
+    <div id="level">LV 1</div>
+    <div id="hud-money" style="position:absolute;bottom:30px;right:90px;font-size:14px;color:#ffd700">$0</div>
+    <div id="hud-weather" style="position:absolute;top:48px;right:16px;font-size:13px;color:#88f;letter-spacing:1px">CLEAR</div>
+    <div id="nitro-bar" style="position:absolute;bottom:76px;left:30px;width:120px;height:8px;background:#222;border:1px solid #555;border-radius:4px;overflow:hidden"><div id="nitro-fill" style="width:0%;height:100%;background:#f80;border-radius:3px;transition:width .1s"></div></div>
+  </div>
+
+  <div id="canvas"></div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./js/lib/three.module.js"
+    }
+  }
+  </script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
